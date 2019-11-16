@@ -55,6 +55,9 @@ class ClassifierModel:
 
         labels = torch.from_numpy(data['label']).long()
         #print("THE PATH")
+        
+        
+        
         #print(data['path'])
 
 

@@ -28,7 +28,7 @@ def run_test(epoch=-1):
     #print(enumerate(dataset))
   
 
-    f = open("/home/jeff/classification.txt", "w")
+    #f = open("/home/jeff/classification.txt", "w")
 
     for i, data in enumerate(dataset):
         #print("GET ITEM MODEL")
@@ -64,7 +64,7 @@ def run_test(epoch=-1):
         #f.write("\n")
         #f.write("PREDIC CLASS\n")
         #f.write(str(pred_class)+"\n")
-        
+        """
         for i in range(len(pred_class)):
             path,idclass = dataset.opt.paths[i]
             #print("path: "+ str(path))
@@ -73,17 +73,13 @@ def run_test(epoch=-1):
             new_path = "/"+list_path[tam-3]+"/"+list_path[tam-2]+"/"+list_path[tam-1]
 
             f.write(new_path+";"+dataset.opt.classes[pred_class[i]]+"\n")
-        #for pred in pred_class:
+        """
+	#for pred in pred_class:
         #    f.write()
             #f.write(str(pred.item())+"\n")
-
-        
-
-
-        
         writer.update_counter(ncorrect, nexamples)
     writer.print_acc(epoch, writer.acc)
-    f.close()
+    #f.close()
 
     return writer.acc
 

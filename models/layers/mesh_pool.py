@@ -43,12 +43,26 @@ class MeshPool(nn.Module):
         mesh = self.__meshes[mesh_index]
         queue = self.__build_queue(self.__fe[mesh_index, :, :mesh.edges_count], mesh.edges_count)
         # recycle = []
-        # last_queue_len = len(queue)
+        #last_queue_len = len(queue)
+        #print(str(len(queue)))
+
         last_count = mesh.edges_count + 1
+        #print(queue)
         mask = np.ones(mesh.edges_count, dtype=np.bool)
         edge_groups = MeshUnion(mesh.edges_count, self.__fe.device)
-        while mesh.edges_count > self.__out_target:
+        while mesh.edges_count > self.__out_target:            
+
+            #try:
+            if(len(queue)==0):
+                print("QUEUE: "+str(mesh.edges_count))
+
             value, edge_id = heappop(queue)
+            
+            #print(value)
+            #except IndexError as e:
+            #    print("QUEUE: "+str(len(queue))+" "+str(e))
+            #    return
+
             edge_id = int(edge_id)
             if mask[edge_id]:
                 self.__pool_edge(mesh, edge_id, mask, edge_groups)

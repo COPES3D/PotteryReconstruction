@@ -31,9 +31,9 @@ if __name__ == '__main__':
         for i, data in enumerate(dataset):
 
             
-            #print("DATA")
+            print("DATA "+str(i))
             #print(dataset.opt.paths[i])
-            #print(data['path'])
+            print(data['path'])
 
             iter_start_time = time.time()
             if total_steps % opt.print_freq == 0:

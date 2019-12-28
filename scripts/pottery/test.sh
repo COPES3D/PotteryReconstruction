@@ -3,7 +3,7 @@
 ## run the test and export collapses
 #--pool_res 600 450 300 180 \
 python test.py \
---dataroot datasets/pottery6 \
+--dataroot datasets/pottery7 \
 --name pottery \
 --ncf 64 128 256 256 \
 --pool_res 750 600 450 250 \

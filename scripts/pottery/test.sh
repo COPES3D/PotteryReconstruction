@@ -3,10 +3,10 @@
 ## run the test and export collapses
 #--pool_res 600 450 300 180 \
 python test.py \
---dataroot datasets/pottery7 \
+--dataroot datasets/pottery5 \
 --name pottery \
 --ncf 64 128 256 256 \
---pool_res 750 600 450 250 \
+--pool_res 750 600 450 230 \
 --norm group \
 --resblocks 1 \
 --export_folder meshes \

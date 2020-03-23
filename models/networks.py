@@ -145,12 +145,12 @@ class MeshConvNet(nn.Module):
         self.fc1 = nn.Linear(self.k[-1], fc_n)
         self.fc2 = nn.Linear(fc_n, nclasses)
 
-    def forward(self, x, mesh):
+    def forward(self, x, mesh, labels):
 
         for i in range(len(self.k) - 1):
             x = getattr(self, 'conv{}'.format(i))(x, mesh)
             x = F.relu(getattr(self, 'norm{}'.format(i))(x))
-            x = getattr(self, 'pool{}'.format(i))(x, mesh)
+            x = getattr(self, 'pool{}'.format(i))(x, mesh,labels)
 
         x = self.gp(x)
         x = x.view(-1, self.k[-1])

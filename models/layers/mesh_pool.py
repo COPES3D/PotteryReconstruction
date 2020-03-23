@@ -17,10 +17,10 @@ class MeshPool(nn.Module):
         self.__meshes = None
         self.__merge_edges = [-1, -1]
 
-    def __call__(self, fe, meshes):
-        return self.forward(fe, meshes)
+    def __call__(self, fe, meshes,labels):
+        return self.forward(fe, meshes,labels)
 
-    def forward(self, fe, meshes):
+    def forward(self, fe, meshes,labels):
         #print("calling pool")
         self.__updated_fe = [[] for _ in range(len(meshes))]
         pool_threads = []
@@ -32,14 +32,16 @@ class MeshPool(nn.Module):
                 pool_threads.append(Thread(target=self.__pool_main, args=(mesh_index,)))
                 pool_threads[-1].start()
             else:
-                self.__pool_main(mesh_index)
+                #print(labels)
+                #print(mesh_index)
+                self.__pool_main(mesh_index,labels[mesh_index])
         if self.__multi_thread:
             for mesh_index in range(len(meshes)):
                 pool_threads[mesh_index].join()
         out_features = torch.cat(self.__updated_fe).view(len(meshes), -1, self.__out_target)
         return out_features
 
-    def __pool_main(self, mesh_index):
+    def __pool_main(self, mesh_index,label):
         mesh = self.__meshes[mesh_index]
         queue = self.__build_queue(self.__fe[mesh_index, :, :mesh.edges_count], mesh.edges_count)
         # recycle = []
@@ -47,7 +49,8 @@ class MeshPool(nn.Module):
         #print(str(len(queue)))
 
         last_count = mesh.edges_count + 1
-        #print(queue)
+        #print(len(queue))
+        
         mask = np.ones(mesh.edges_count, dtype=np.bool)
         edge_groups = MeshUnion(mesh.edges_count, self.__fe.device)
         while mesh.edges_count > self.__out_target:            
@@ -66,9 +69,31 @@ class MeshPool(nn.Module):
             edge_id = int(edge_id)
             if mask[edge_id]:
                 self.__pool_edge(mesh, edge_id, mask, edge_groups)
+        
+
         mesh.clean(mask, edge_groups)
         fe = edge_groups.rebuild_features(self.__fe[mesh_index], mask, self.__out_target)
+        #print(label.item())
+        if(self.__out_target == 230):
+            with open('/home/jeff/data_visualization.txt', 'a+') as f:
+                
+                #np.savetxt(f,str(label.item()),newline='\n')
+                #print(fe[1].numpy())
+                features = fe[1].numpy()
+                #print(features)
+                #np.savetxt(f,fe[1].numpy(),delimiter=',',newline='\n')
+                #for i in range(len(fe[1])):
+                #np.savetxt(f, label.item())
+                #np.savetxt(f,fe[1]))
+                f.write(str(label.item())+";")
+                for i in range(len(features)):
+                    #np.savetxt(f,";"+str(fe[1][i]))
+                    f.write(str(features[i])+",")
+                    #np.savetxt(f, str(np.array(fe[1][i]).reshape(1,)), fmt='%.18e')
+                f.write("\n")
         self.__updated_fe[mesh_index] = fe
+       
+
 
     def __pool_edge(self, mesh, edge_id, mask, edge_groups):
         if self.has_boundaries(mesh, edge_id):

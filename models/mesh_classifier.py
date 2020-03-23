@@ -58,7 +58,7 @@ class ClassifierModel:
         
         
         
-        #print(data['path'])
+        print(data['path'])
 
 
         #print("Labels")
@@ -76,7 +76,7 @@ class ClassifierModel:
 
     def forward(self):
         #print("MY FORWARD")
-        out = self.net(self.edge_features, self.mesh)
+        out = self.net(self.edge_features, self.mesh, self.labels)
         return out
 
     def backward(self, out):

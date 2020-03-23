@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
             
             #print("DATA "+str(i))
-            #print(dataset.opt.paths[i])>
+            #print(dataset.opt.paths[i])
             #print(data['path'])
 
             iter_start_time = time.time()
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             acc = run_test(epoch)
             writer.plot_acc(acc, epoch)
         
-        print("FINISHHHHHHHHHHH ITERATIONNNNNN "+str(epoch))
+        #print("FINISHHHHHHHHHHH ITERATIONNNNNN "+str(epoch))
         #break
 
     writer.close()

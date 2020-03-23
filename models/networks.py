@@ -137,7 +137,7 @@ class MeshConvNet(nn.Module):
             setattr(self, 'conv{}'.format(i), MResConv(ki, self.k[i + 1], nresblocks))
             setattr(self, 'norm{}'.format(i), norm_layer(**norm_args[i]))
             setattr(self, 'pool{}'.format(i), MeshPool(self.res[i + 1]))
-            print("init pool") 
+            #print("init pool") 
 
 
         self.gp = torch.nn.AvgPool1d(self.res[-1])

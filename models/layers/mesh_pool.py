@@ -52,15 +52,13 @@ class MeshPool(nn.Module):
         edge_groups = MeshUnion(mesh.edges_count, self.__fe.device)
         while mesh.edges_count > self.__out_target:            
 
-            #try:
-            if(len(queue)==0):
-                print("QUEUE: "+str(mesh.edges_count))
-
-            value, edge_id = heappop(queue)
-            
-            #print(value)
-            #except IndexError as e:
-            #    print("QUEUE: "+str(len(queue))+" "+str(e))
+            try:
+                if(len(queue)==0):
+                    print("QUEUE: "+str(mesh.edges_count))
+                value, edge_id = heappop(queue)
+                #print(value)
+            except IndexError as e:
+                print("QUEUE: "+str(len(queue))+" "+str(e))
             #    return
 
             edge_id = int(edge_id)
